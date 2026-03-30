@@ -42,10 +42,12 @@ class DatabaseTest extends TestCase
         $this->assertTrue($constructor->isPrivate());
     }
 
-    public function testWakeupIsPrivate(): void
+    public function testWakeupThrowsException(): void
     {
+        $this->expectException(\RuntimeException::class);
         $reflection = new \ReflectionClass(Database::class);
         $wakeup = $reflection->getMethod('__wakeup');
-        $this->assertTrue($wakeup->isPrivate());
+        $instance = $reflection->newInstanceWithoutConstructor();
+        $wakeup->invoke($instance);
     }
 }

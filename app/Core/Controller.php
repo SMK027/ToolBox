@@ -76,7 +76,7 @@ abstract class Controller
      */
     protected function isAjax(): bool
     {
-        return ($_SERVER['HTTP_X_REQUESTED_WITH'] ?? '') === 'XMLHttpRequest'
+        return strtolower($_SERVER['HTTP_X_REQUESTED_WITH'] ?? '') === 'xmlhttprequest'
             || str_contains($_SERVER['HTTP_ACCEPT'] ?? '', 'application/json');
     }
 

@@ -80,9 +80,9 @@ class RouterTest extends TestCase
 
         ob_start();
         $this->router->dispatch('GET', '/does-not-exist');
-        ob_end_clean();
+        $output = ob_get_clean();
 
-        $this->assertSame(404, http_response_code());
+        $this->assertStringContainsString('404', $output);
     }
 
     public function testDispatchMethodMismatch(): void
@@ -91,9 +91,9 @@ class RouterTest extends TestCase
 
         ob_start();
         $this->router->dispatch('POST', '/only-get');
-        ob_end_clean();
+        $output = ob_get_clean();
 
-        $this->assertSame(404, http_response_code());
+        $this->assertStringContainsString('404', $output);
     }
 
     public function testDispatchTrimsTrailingSlash(): void

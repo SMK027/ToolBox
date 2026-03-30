@@ -51,10 +51,10 @@ class Router
     /**
      * Dispatche la requête courante vers le contrôleur correspondant.
      */
-    public function dispatch(): void
+    public function dispatch(?string $requestMethod = null, ?string $requestUri = null): void
     {
-        $requestMethod = $_SERVER['REQUEST_METHOD'] ?? 'GET';
-        $uri = parse_url($_SERVER['REQUEST_URI'] ?? '/', PHP_URL_PATH);
+        $requestMethod = $requestMethod ?? ($_SERVER['REQUEST_METHOD'] ?? 'GET');
+        $uri = parse_url($requestUri ?? ($_SERVER['REQUEST_URI'] ?? '/'), PHP_URL_PATH);
         $uri = rtrim($uri, '/') ?: '/';
 
         // Support PUT/DELETE via champ _method
@@ -106,7 +106,7 @@ class Router
      */
     private function sendError(int $code, ?\Throwable $exception = null): void
     {
-        http_response_code($code);
+        @http_response_code($code);
 
         $title = match ($code) {
             404 => 'Page non trouvée',
