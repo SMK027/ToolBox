@@ -2,7 +2,9 @@ version: '3.8'
 
 services:
   app:
-    build: .
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
     container_name: app_web
     ports:
       - "8099:80"
@@ -78,8 +80,8 @@ services:
     image: axllent/mailpit
     container_name: app_mailpit
     ports:
-      - "8025:8025"
-      - "1025:1025"
+      - "8026:8025"
+      - "1026:1025"
     networks:
       - app_network
     restart: unless-stopped
