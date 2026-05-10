@@ -1,67 +1,28 @@
-# Dependencies
-/vendor/
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-}    }        "test": "phpunit"    "scripts": {    },        }            "Tests\\": "tests/"        "psr-4": {    "autoload-dev": {    },        ]            "app/Helpers/functions.php"        "files": [        },            "App\\": "app/"        "psr-4": {    "autoload": {    },        "phpunit/phpunit": "^9.6"    "require-dev": {    },        "php": ">=8.0"    "require": {    "type": "project",    "description": "Boîte à outils PHP – Framework MVC léger et réutilisable",node_modules/
-
-# Environment
-.env
-
-# IDE
-.idea/
-.vscode/
-*.swp
-*.swo
-*~
-
-# OS
-.DS_Store
-Thumbs.db
-
-# Uploads (keep directory structure)
-public/uploads/*
-!public/uploads/.gitkeep
-
-# Docker volumes
-db_data/
-data/mysql/
-data/uploads/*
-!data/uploads/.gitkeep
-
-# Logs
 *.log
-
-# Composer
-composer.lock
-
-# PHPUnit
+.DS_Store
+.env
+.env.backup
+.env.production
+.phpactor.json
 .phpunit.result.cache
-.phpunit.cache/
-coverage/
-
-# Prompt
-prompt.md
+/.codex
+/.cursor/
+/.idea
+/.nova
+/.phpunit.cache
+/.vscode
+/.zed
+/auth.json
+/data
+/node_modules
+/public/build
+/public/fonts-manifest.dev.json
+/public/hot
+/public/storage
+/storage/*.key
+/storage/pail
+/vendor
+_ide_helper.php
+Homestead.json
+Homestead.yaml
+Thumbs.db

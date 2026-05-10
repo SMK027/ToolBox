@@ -1,78 +1,42 @@
 <?php
 
-declare(strict_types=1);
-
 namespace App\Models;
 
-use App\Core\Model;
+// use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Database\Factories\UserFactory;
+use Illuminate\Database\Eloquent\Attributes\Fillable;
+use Illuminate\Database\Eloquent\Attributes\Hidden;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Notifications\Notifiable;
 
-/**
- * Modèle User — exemple de modèle concret.
- * À adapter selon les besoins du projet.
- */
-class User extends Model
+#[Fillable(['username', 'name', 'email', 'password', 'global_role', 'avatar', 'bio'])]
+#[Hidden(['password', 'remember_token'])]
+class User extends Authenticatable
 {
-    protected string $table = 'users';
+    /** @use HasFactory<UserFactory> */
+    use HasFactory, Notifiable;
 
     /**
-     * Inscription d'un nouvel utilisateur.
+     * Get the attributes that should be cast.
+     *
+     * @return array<string, string>
      */
-    public function register(string $username, string $email, string $password): int
+    protected function casts(): array
     {
-        return $this->create([
-            'username'    => $username,
-            'email'       => $email,
-            'password'    => password_hash($password, PASSWORD_BCRYPT),
-            'global_role' => 'user',
-        ]);
+        return [
+            'email_verified_at' => 'datetime',
+            'password'          => 'hashed',
+        ];
     }
 
-    /**
-     * Authentification par email et mot de passe.
-     */
-    public function authenticate(string $email, string $password): ?array
+    public function isAdmin(): bool
     {
-        $user = $this->findOneBy(['email' => $email]);
-        if (!$user) {
-            return null;
-        }
-        if (!password_verify($password, $user['password'])) {
-            return null;
-        }
-        return $user;
+        return in_array($this->global_role, ['admin', 'superadmin']);
     }
 
-    /**
-     * Recherche un utilisateur par nom d'utilisateur.
-     */
-    public function findByUsername(string $username): ?array
+    public function isSuperAdmin(): bool
     {
-        return $this->findOneBy(['username' => $username]);
-    }
-
-    /**
-     * Recherche un utilisateur par email.
-     */
-    public function findByEmail(string $email): ?array
-    {
-        return $this->findOneBy(['email' => $email]);
-    }
-
-    /**
-     * Met à jour le mot de passe d'un utilisateur.
-     */
-    public function updatePassword(int $userId, string $newPassword): bool
-    {
-        return $this->update($userId, [
-            'password' => password_hash($newPassword, PASSWORD_BCRYPT),
-        ]);
-    }
-
-    /**
-     * Met à jour le rôle global d'un utilisateur.
-     */
-    public function updateGlobalRole(int $userId, string $role): bool
-    {
-        return $this->update($userId, ['global_role' => $role]);
+        return $this->global_role === 'superadmin';
     }
 }

@@ -1,36 +1,38 @@
 #!/bin/bash
 set -e
 
-# Fixer les permissions du dossier uploads
-mkdir -p /var/www/html/public/uploads
-chown -R www-data:www-data /var/www/html/public/uploads
-chmod -R 777 /var/www/html/public/uploads
+# Fixer les permissions Laravel
+chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache
+chmod -R 775 /var/www/html/storage /var/www/html/bootstrap/cache
+
+# Générer APP_KEY si absente
+if [ -z "$APP_KEY" ]; then
+    php artisan key:generate --force
+    echo "[entrypoint] APP_KEY généré."
+fi
+
+# Lien symbolique storage → public/storage
+php artisan storage:link --no-interaction 2>/dev/null || true
 
 # Exécuter les migrations
 echo "[entrypoint] Exécution des migrations..."
-php /var/www/html/database/migrate.php
+php artisan migrate --force
 echo "[entrypoint] Migrations terminées."
 
-# Configurer les tâches cron
-touch /var/log/app-cron.log
-chown www-data:www-data /var/log/app-cron.log
-# Exporter les variables d'environnement pour les scripts cron
-{
-    echo "DB_HOST=${DB_HOST}"
-    echo "DB_PORT=${DB_PORT}"
-    echo "DB_NAME=${DB_NAME}"
-    echo "DB_USER=${DB_USER}"
-    echo "DB_PASS=${DB_PASS}"
-    echo "APP_URL=${APP_URL}"
-    echo "APP_DEBUG=${APP_DEBUG:-false}"
-    echo ""
-    echo "# Ajoutez vos tâches cron ici"
-    echo "# * * * * * /usr/local/bin/php /var/www/html/bin/mon-script.php >> /var/log/app-cron.log 2>&1"
-} > /tmp/app-cron
-crontab -u www-data /tmp/app-cron
-rm -f /tmp/app-cron
-service cron start
-echo "[entrypoint] Cron démarré."
+# Optimiser les caches (config, routes, vues)
+php artisan config:cache
+php artisan route:cache
+php artisan view:cache
+echo "[entrypoint] Caches reconstruits."
+
+# Configurer le scheduler Laravel (cron)
+touch /var/log/laravel-scheduler.log
+chown www-data:www-data /var/log/laravel-scheduler.log
+printf "* * * * * www-data /usr/local/bin/php /var/www/html/artisan schedule:run >> /var/log/laravel-scheduler.log 2>&1\n" \
+    > /etc/cron.d/laravel-scheduler
+chmod 0644 /etc/cron.d/laravel-scheduler
+cron
+echo "[entrypoint] Scheduler Laravel démarré."
 
 # Démarrer Apache
 exec apache2-foreground

@@ -1,123 +1,58 @@
-# ToolBox — Framework MVC PHP
+<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
 
-Boîte à outils PHP clé en main pour démarrer rapidement un projet web avec une architecture MVC solide.
+<p align="center">
+<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
+<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
+<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
+<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
+</p>
 
-## Composants inclus
+## About Laravel
 
-| Composant | Description |
-|-----------|-------------|
-| **MVC** | Router, Controller abstrait, Model abstrait avec CRUD PDO |
-| **Sécurité** | CSRF, Session sécurisée, JWT (API), Middleware d'accès |
-| **Docker** | Dockerfile PHP-Apache, Docker Compose (dev + prod) |
-| **Migrations** | Système de migrations SQL automatisé |
-| **CSS** | Framework CSS responsive mobile-first avec variables CSS |
-| **Tests** | Suite PHPUnit unitaire complète |
+Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
 
-## Stack technique
+- [Simple, fast routing engine](https://laravel.com/docs/routing).
+- [Powerful dependency injection container](https://laravel.com/docs/container).
+- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
+- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
+- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
+- [Robust background job processing](https://laravel.com/docs/queues).
+- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
 
-| Composant | Technologie |
-|-----------|-------------|
-| Backend | PHP 8.2, architecture MVC custom |
-| Base de données | MySQL 8.0 avec PDO (requêtes préparées) |
-| Frontend | HTML5, CSS3 (mobile-first, variables CSS, Flexbox/Grid), JavaScript vanilla |
-| Serveur | Apache avec mod_rewrite |
-| Conteneurisation | Docker / Docker Compose |
-| Tests | PHPUnit 9.6 |
-| Autoloading | Composer PSR-4 |
+Laravel is accessible, powerful, and provides tools required for large, robust applications.
 
-## Installation avec Docker
+## Learning Laravel
 
-```bash
-# Cloner le projet
-git clone <url-du-repo> mon-projet
-cd mon-projet
+Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
 
-# Configurer l'environnement
-cp .env.example .env
+In addition, [Laracasts](https://laracasts.com) contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
 
-# Lancer les conteneurs
-docker-compose -f docker-compose.dev.yml up -d
-```
+You can also watch bite-sized lessons with real-world projects on [Laravel Learn](https://laravel.com/learn), where you will be guided through building a Laravel application from scratch while learning PHP fundamentals.
 
-L'application sera accessible sur :
-- **Application** : http://localhost:8080
-- **phpMyAdmin** : http://localhost:8081
+## Agentic Development
 
-## Installation manuelle
+Laravel's predictable structure and conventions make it ideal for AI coding agents like Claude Code, Cursor, and GitHub Copilot. Install [Laravel Boost](https://laravel.com/docs/ai) to supercharge your AI workflow:
 
 ```bash
-# Installer les dépendances
-composer install
+composer require laravel/boost --dev
 
-# Configurer les variables d'environnement
-cp .env.example .env
-
-# Lancer le serveur de développement PHP
-php -S localhost:8080 -t public/
+php artisan boost:install
 ```
 
-## Architecture
+Boost provides your agent 15+ tools and skills that help agents build Laravel applications while following best practices.
 
-```
-app/
-├── Config/          # Configuration (Database singleton PDO)
-├── Controllers/     # Contrôleurs MVC
-│   └── Api/         # Contrôleurs API REST (JWT)
-├── Core/            # Framework (Router, Controller, Model, Session, CSRF, JWT, Middleware)
-├── Helpers/         # Fonctions utilitaires globales
-├── Models/          # Modèles de données
-└── Views/           # Vues PHP
-    ├── auth/        # Pages de connexion / inscription
-    ├── errors/      # Pages d'erreur
-    ├── home/        # Page d'accueil
-    ├── layouts/     # Layout principal
-    └── partials/    # Composants réutilisables
-database/
-├── migrate.php      # Script de migration automatique
-└── migrations/      # Fichiers SQL numérotés
-public/
-├── css/             # Feuilles de style
-├── js/              # JavaScript
-├── index.php        # Front controller + routes
-└── .htaccess        # Réécriture Apache
-tests/
-└── Unit/            # Tests unitaires PHPUnit
-```
+## Contributing
 
-## Sécurité
+Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
 
-- **Injection SQL** : toutes les requêtes utilisent des requêtes préparées PDO
-- **XSS** : échappement systématique via la fonction `e()` (htmlspecialchars)
-- **CSRF** : token unique par session, validé sur chaque formulaire POST
-- **Mots de passe** : hashés avec `password_hash()` (bcrypt)
-- **Sessions** : régénération d'ID après connexion
-- **JWT** : authentification API avec HMAC-SHA256
+## Code of Conduct
 
-## Tests
+In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
 
-```bash
-# Lancer tous les tests
-./vendor/bin/phpunit
+## Security Vulnerabilities
 
-# Lancer uniquement les tests unitaires
-./vendor/bin/phpunit --testsuite Unit
+If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
 
-# Avec couverture de code
-./vendor/bin/phpunit --coverage-html coverage/
-```
+## License
 
-## Personnalisation
-
-Ce projet est conçu comme point de départ. Adaptez les éléments suivants :
-
-1. **composer.json** : Changez le `name` et la `description`
-2. **.env.example** : Ajustez les variables selon votre projet
-3. **docker-compose.yml** : Modifiez les labels Traefik pour votre domaine
-4. **public/index.php** : Définissez vos propres routes
-5. **app/Models/** : Créez vos modèles métier
-6. **app/Views/** : Développez vos vues
-7. **database/migrations/** : Écrivez vos migrations SQL
-
-## Licence
-
-Projet personnel — libre d'utilisation.
+The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
